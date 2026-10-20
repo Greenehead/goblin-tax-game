@@ -1,0 +1,18 @@
+APP NAME
+Goblin Tax: Rage Run
+
+SHORT DESCRIPTION
+Dodge tax bills, collect coins, and survive the goblin's terrible day.
+
+FULL DESCRIPTION
+The tax office has found you. Run, jump, dodge flying paperwork, collect coins, and see how long you can survive in this silly little rage runner. Upgrade your questionable boots, grab a debt helmet, and try the daily tax audit. Easy to learn, very easy to mess up.
+
+FEATURES
+- Quick endless-runner rounds
+- Touch and keyboard controls
+- Coins and local upgrades
+- Daily score challenge
+- Shareable score results
+
+IMPORTANT
+Current shop and rewarded-ad buttons are demonstrations only. No real purchases or ads are enabled in this build.

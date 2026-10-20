@@ -1,0 +1,23 @@
+{
+  "name": "Goblin Tax: Rage Run",
+  "short_name": "Goblin Rage",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#171329",
+  "theme_color": "#171329",
+  "description": "Dodge tax bills, collect coins, and survive the goblin's terrible day.",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
