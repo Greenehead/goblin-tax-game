@@ -28,4 +28,28 @@ function endRun(){state='over';const finalScore=Math.floor(score),newBest=finalS
 function loop(now){if(state!=='playing')return;let dt=Math.min(2,(now-last)/16.67||1);last=now;frame+=dt;score+=dt*.45;speed=Math.min(10,4.4+score/170);spawn-=dt;if(spawn<=0){spawnObj();spawn=Math.max(dailyMode?24:29,(dailyMode?68:78)-score/8)+Math.random()*25}player.vy+=.52*dt;player.y+=player.vy*dt;if(player.y>player.ground-player.h){player.y=player.ground-player.h;player.vy=0;slam=false}obstacles.forEach(o=>{o.x-=speed*dt;if(o.type==='coin'&&!o.taken&&Math.abs(o.x+13-(player.x+24))<35&&Math.abs(o.y+13-(player.y+28))<40){o.taken=true;runCoins+=5;particles.push({x:o.x,y:o.y,life:22})}if(o.type!=='coin'&&!o.passed&&o.x+o.w<player.x){o.passed=true;runCoins+=1}let hit=player.x+player.w-8>o.x&&player.x+8<o.x+o.w&&player.y+player.h-6>o.y&&player.y+8<o.y+o.h;if(hit&&o.type!=='coin'&&!o.hit){o.hit=true;if(player.shield>0){player.shield--;o.x=-100;toast('Shield used. The goblin lives!')}else{draw();endRun();return}}});obstacles=obstacles.filter(o=>o.x>-60&&!o.taken);particles=particles.filter(p=>p.life-->0);draw();renderStats();requestAnimationFrame(loop)}
 $('#startBtn').onclick=()=>start(false);$('#again').onclick=()=>start(false);$('#daily').onclick=()=>start(true);$('#dailyHint').textContent=`Daily tax audit · ${todayKey} · Your best today: ${dailyBest}`;$('#share').onclick=async()=>{const msg=`I scored ${Math.floor(score)} in Goblin Tax: Rage Run! Can you beat me? 👺`;try{if(navigator.share)await navigator.share({title:'Goblin Tax: Rage Run',text:msg});else if(navigator.clipboard){await navigator.clipboard.writeText(msg);toast('Score copied — share it!')}else toast(msg)}catch(e){if(e.name!=='AbortError')toast('Could not share on this browser')}};$('#jump').onclick=jump;$('#slam').onclick=panic;canvas.addEventListener('pointerdown',e=>{if(state==='playing'){if(e.clientY<canvas.getBoundingClientRect().top+canvas.clientHeight*.65)jump();else panic()}});window.addEventListener('keydown',e=>{if(['Space','ArrowUp'].includes(e.code)){e.preventDefault();if(state==='ready')start();else jump()}if(e.code==='ArrowDown')panic();if(e.code==='Enter'&&state==='over')start()});$('#revive').onclick=()=>{if(state!=='over'||revived)return;revived=true;state='playing';player.shield=1;player.y=player.ground-player.h;player.vy=0;obstacles=obstacles.filter(o=>o.x>player.x+100);$('#over').classList.add('hidden');toast('Demo revive! No ad shown.');last=performance.now();requestAnimationFrame(loop)};$('#upgradeList').onclick=e=>{let id=e.target.dataset.up;if(!id)return;let u=upgrades.find(v=>v.id===id),cost=Math.floor(u.cost*Math.pow(1.8,u.level));if(coins<cost||u.level>=u.max)return;coins-=cost;u.level++;save();renderStats();toast('Purchased. Still bad at this game.')};document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));$('#upgrades').classList.toggle('hidden',b.dataset.tab!=='upgrades');$('#shop').classList.toggle('hidden',b.dataset.tab!=='shop')});$('#skinBuy').onclick=()=>{if(coins<80||skin)return;coins-=80;skin=true;save();renderStats();toast('Business goblin acquired.')};$('#coinBuy').onclick=()=>{coins+=100;save();renderStats();toast('100 free demo coins. No payment taken.')};$('#adCoins').onclick=()=>{coins+=40;save();renderStats();toast('Demo ad reward granted. No ad shown.')};renderStats();$('#dailyHint').textContent=`Daily tax audit · ${todayKey} · Your best today: ${dailyBest}`;draw();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
 })();
-</script></body></html>
+</script>
+
+<section id="about-game" style="max-width:700px;margin:40px auto;padding:20px;color:#eee;font-family:Arial,sans-serif;line-height:1.7;">
+  <h2>About Goblin Tax: Rage Run</h2>
+  <p>Goblin Tax: Rage Run is a free, browser-based game built for players who enjoy quick challenges, frustrating obstacles, and trying again after a defeat. Jump in, test your reactions, and see how far you can get.</p>
+
+  <h2>How to Play</h2>
+  <p>Start a run and pay attention to the obstacles ahead. React quickly, avoid hazards, and learn from each attempt. The goal is to improve your run and beat your previous result.</p>
+
+  <h2>Tips for Players</h2>
+  <ul>
+    <li>Watch the obstacles rather than rushing blindly.</li>
+    <li>Learn the timing of difficult sections through practice.</li>
+    <li>Don't give up after a failed attempt—try a different approach.</li>
+    <li>Play on a device and browser that work comfortably for you.</li>
+  </ul>
+
+  <h2>About This Website</h2>
+  <p>Goblin Tax is an independent game project. The aim is to provide a simple, accessible game that visitors can play directly in their web browser without needing to install a separate app.</p>
+
+  <h2>Problems or Feedback</h2>
+  <p>If the game does not load correctly or you notice a bug, please use the project's public GitHub repository to report the issue or share feedback.</p>
+  <p><a href="https://github.com/Greenehead/goblin-tax-game" style="color:#c6a7ff;">Visit the Goblin Tax project on GitHub</a></p>
+</section>
+</body></html>
